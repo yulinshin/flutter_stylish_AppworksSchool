@@ -48,65 +48,65 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.amberAccent, 
+      backgroundColor: Colors.amberAccent,
       appBar: AppBar(
         flexibleSpace: Container(
           margin: const EdgeInsets.all(15.0),
           decoration: BoxDecoration(
               image: DecorationImage(
                   image: AssetImage('assets/images/Image_Logo.png'),
-                  fit: BoxFit.fitHeight
-              )
-          ),
+                  fit: BoxFit.fitHeight)),
         ),
       ),
       body: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.all(20),
-        child: Row(
-          children: [
-              Card(
-                semanticContainer: true,
-                clipBehavior: Clip.antiAliasWithSaveLayer,
-                child: Image.network(
-                  'https://images.pexels.com/photos/934070/pexels-photo-934070.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-                   height: 200,
-                   width: 400,
-                   fit: BoxFit.fill,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0)
-                  ),
-              ),
-              Card(
-                semanticContainer: true,
-                clipBehavior: Clip.antiAliasWithSaveLayer,
-                child: Image.network(
-                  'https://images.pexels.com/photos/934070/pexels-photo-934070.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-                   height: 200,
-                   width: 400,
-                   fit: BoxFit.fill,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0)
-                  ),
-              ),
-              Card(
-                semanticContainer: true,
-                clipBehavior: Clip.antiAliasWithSaveLayer,
-                child: Image.network(
-                  'https://images.pexels.com/photos/934070/pexels-photo-934070.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-                   height: 200,
-                   width: 400,
-                   fit: BoxFit.fill,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0)
-                  ),
-              ),
-          ],
-        ),
-      ), 
+        child: BannerSection()
+      ),
     );
-  } 
+  }
+}
+
+class BannerSection extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+          children: [
+            CardGenerator(
+              url:
+                  'https://images.pexels.com/photos/934070/pexels-photo-934070.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+            ),
+            CardGenerator(
+                url:
+                    'https://images.pexels.com/photos/996329/pexels-photo-996329.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
+            CardGenerator(
+              url:
+                  'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+            ),
+          ],
+        );
+  }
+}
+
+class CardGenerator extends StatelessWidget {
+  const CardGenerator({
+    Key? key,
+    required this.url,
+  }) : super(key: key);
+
+  final String url;
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      semanticContainer: true,
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      child: Image.network(
+        url,
+        height: 200,
+        width: 400,
+        fit: BoxFit.fill,
+      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+    );
+  }
 }
