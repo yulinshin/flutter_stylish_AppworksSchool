@@ -1,16 +1,16 @@
 # flutter_stylish
 
-A new Flutter project.
+This project is part of the AppWorks School Flutter program.
 
-## Getting Started
+## Week 1 Notes
 
-This project is a starting point for a Flutter application.
+### Error
+Encounter the "INSTALL_FAILED_INSUFFICIENT_STORAGE" error, Stop the emulator in the Android Studio AVD Manager, wipe data, and increase the internal storage.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Adding Image Assets
+To add image assets, create a folder "assets/images" in the project, and add the following to the pubspec.yaml file:
+```
+flutter:
+assets:
+- assets/images
+```
