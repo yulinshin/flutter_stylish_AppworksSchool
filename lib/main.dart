@@ -11,10 +11,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.grey,
-      ),
       home: const MyHomePage(),
     );
   }
@@ -22,16 +18,6 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
@@ -48,8 +34,8 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.amberAccent,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         flexibleSpace: Container(
           margin: const EdgeInsets.all(15.0),
           decoration: BoxDecoration(
@@ -58,10 +44,22 @@ class _MyHomePageState extends State<MyHomePage> {
                   fit: BoxFit.fitHeight)),
         ),
       ),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.all(20),
-        child: BannerSection()
+      body: Column(
+        children: [
+          SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.all(20),
+              child: BannerSection()),
+          SingleChildScrollView(
+            padding: EdgeInsets.all(20),
+            scrollDirection: Axis.vertical,
+            child: ProductCardGenerator(
+              productName: "ProductName",
+              productPicUrl: "https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+              productPrice: 123,
+              ),
+          )
+        ],
       ),
     );
   }
@@ -71,25 +69,25 @@ class BannerSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-          children: [
-            CardGenerator(
-              url:
-                  'https://images.pexels.com/photos/934070/pexels-photo-934070.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-            ),
-            CardGenerator(
-                url:
-                    'https://images.pexels.com/photos/996329/pexels-photo-996329.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
-            CardGenerator(
-              url:
-                  'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-            ),
-          ],
-        );
+      children: [
+        BannerGenerator(
+          url:
+              'https://images.pexels.com/photos/934070/pexels-photo-934070.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+        ),
+        BannerGenerator(
+            url:
+                'https://images.pexels.com/photos/996329/pexels-photo-996329.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
+        BannerGenerator(
+          url:
+              'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+        ),
+      ],
+    );
   }
 }
 
-class CardGenerator extends StatelessWidget {
-  const CardGenerator({
+class BannerGenerator extends StatelessWidget {
+  const BannerGenerator({
     Key? key,
     required this.url,
   }) : super(key: key);
@@ -107,6 +105,63 @@ class CardGenerator extends StatelessWidget {
         fit: BoxFit.fill,
       ),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+    );
+  }
+}
+
+class ProductCardGenerator extends StatelessWidget {
+ 
+  const ProductCardGenerator({
+    required this.productName,
+    required this.productPrice,
+    required this.productPicUrl,
+  });
+ 
+  final String productName;
+  final int productPrice;
+  final String productPicUrl;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      semanticContainer: true,
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      child: Row(
+        children: [
+          Image.network(
+           productPicUrl,
+           height: 100,
+           width: 80,
+           fit: BoxFit.fitHeight,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+               Padding(
+                 padding: const EdgeInsets.all(4.0),
+                 child: Text(productName,
+                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                 ),
+               ),
+               Padding(
+                 padding: const EdgeInsets.all(4.0),
+                 child: Text('NT\$ $productPrice',
+                 style: TextStyle(fontSize: 16),
+                 ),
+               ),
+              ],  
+            ),
+          ),
+        ], 
+      ),
+      shape: RoundedRectangleBorder(
+         side: BorderSide(
+          color: Colors.grey,
+          width: 0.5,
+        ),
+        borderRadius: BorderRadius.circular(10.0)),
     );
   }
 }
