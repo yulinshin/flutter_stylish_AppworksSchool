@@ -36,13 +36,8 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        flexibleSpace: Container(
-          margin: const EdgeInsets.all(15.0),
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage('assets/images/Image_Logo.png'),
-                  fit: BoxFit.fitHeight)),
-        ),
+        title: Image.asset('assets/images/Image_Logo.png', fit: BoxFit.contain, height: 30),
+        centerTitle: true,
       ),
       body: Column(
         children: [
