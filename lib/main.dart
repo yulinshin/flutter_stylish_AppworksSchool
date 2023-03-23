@@ -50,14 +50,12 @@ class _MyHomePageState extends State<MyHomePage> {
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.all(20),
               child: BannerSection()),
+          Expanded(child: 
           SingleChildScrollView(
             padding: EdgeInsets.all(20),
             scrollDirection: Axis.vertical,
-            child: ProductCardGenerator(
-              productName: "ProductName",
-              productPicUrl: "https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-              productPrice: 123,
-              ),
+            child: PorductSection(),
+          )
           )
         ],
       ),
@@ -109,14 +107,72 @@ class BannerGenerator extends StatelessWidget {
   }
 }
 
+class PorductSection extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    bool isScreenWide = MediaQuery.of(context).size.width >= 800;
+
+    return Flex(
+      direction: isScreenWide ? Axis.horizontal : Axis.vertical,
+      clipBehavior: Clip.hardEdge,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[
+        Expanded(child: CategorySection(categoryTitle: '女裝')),
+        Expanded(child:CategorySection(categoryTitle: '男裝')),
+        Expanded(child:CategorySection(categoryTitle: '配件'))
+      ],
+    );
+  }
+}
+
+class CategorySection extends StatelessWidget {
+  const CategorySection({
+    required this.categoryTitle,
+  });
+
+  final String categoryTitle;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(categoryTitle),
+        ProductCardGenerator(
+          productName: "ProductName",
+          productPicUrl:
+              "https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+          productPrice: 123,
+        ),
+        ProductCardGenerator(
+          productName: "ProductName",
+          productPicUrl:
+              "https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+          productPrice: 123,
+        ),
+        ProductCardGenerator(
+          productName: "ProductName",
+          productPicUrl:
+              "https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+          productPrice: 123,
+        ),
+        ProductCardGenerator(
+          productName: "ProductName",
+          productPicUrl:
+              "https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+          productPrice: 123,
+        )
+      ],
+    );
+  }
+}
+
 class ProductCardGenerator extends StatelessWidget {
- 
   const ProductCardGenerator({
     required this.productName,
     required this.productPrice,
     required this.productPicUrl,
   });
- 
+
   final String productName;
   final int productPrice;
   final String productPicUrl;
@@ -129,39 +185,41 @@ class ProductCardGenerator extends StatelessWidget {
       child: Row(
         children: [
           Image.network(
-           productPicUrl,
-           height: 100,
-           width: 80,
-           fit: BoxFit.fitHeight,
+            productPicUrl,
+            height: 100,
+            width: 80,
+            fit: BoxFit.fitHeight,
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-               Padding(
-                 padding: const EdgeInsets.all(4.0),
-                 child: Text(productName,
-                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                 ),
-               ),
-               Padding(
-                 padding: const EdgeInsets.all(4.0),
-                 child: Text('NT\$ $productPrice',
-                 style: TextStyle(fontSize: 16),
-                 ),
-               ),
-              ],  
+                Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Text(
+                    productName,
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Text(
+                    'NT\$ $productPrice',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ),
+              ],
             ),
           ),
-        ], 
+        ],
       ),
       shape: RoundedRectangleBorder(
-         side: BorderSide(
-          color: Colors.grey,
-          width: 0.5,
-        ),
-        borderRadius: BorderRadius.circular(10.0)),
+          side: BorderSide(
+            color: Colors.grey,
+            width: 0.5,
+          ),
+          borderRadius: BorderRadius.circular(10.0)),
     );
   }
 }
