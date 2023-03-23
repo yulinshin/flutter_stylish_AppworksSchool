@@ -51,11 +51,11 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: const EdgeInsets.all(20),
               child: BannerSection()),
           Expanded(child: 
-          SingleChildScrollView(
-            padding: EdgeInsets.all(20),
-            scrollDirection: Axis.vertical,
-            child: PorductSection(),
-          )
+            SingleChildScrollView(
+              padding: EdgeInsets.all(20),
+              scrollDirection: Axis.vertical,
+              child: PorductSection(),
+            )
           )
         ],
       ),
@@ -115,11 +115,11 @@ class PorductSection extends StatelessWidget {
     return Flex(
       direction: isScreenWide ? Axis.horizontal : Axis.vertical,
       clipBehavior: Clip.hardEdge,
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisSize:  MainAxisSize.min,
       children: <Widget>[
-        Expanded(child: CategorySection(categoryTitle: '女裝')),
-        Expanded(child:CategorySection(categoryTitle: '男裝')),
-        Expanded(child:CategorySection(categoryTitle: '配件'))
+        Flexible(child: CategorySection(categoryTitle: '女裝')),
+        Flexible(child:CategorySection(categoryTitle: '男裝')),
+        Flexible(child:CategorySection(categoryTitle: '配件'))
       ],
     );
   }
