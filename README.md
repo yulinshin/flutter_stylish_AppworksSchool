@@ -14,3 +14,5 @@ flutter:
 assets:
 - assets/images
 ```
+
+### Expanded vs Flexible
