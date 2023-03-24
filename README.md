@@ -1,6 +1,6 @@
 # flutter_stylish
 
-This project is part of the AppWorks School Flutter program.
+This project is assigment of the AppWorks School Flutter program.
 
 ## Week 1 Notes
 
