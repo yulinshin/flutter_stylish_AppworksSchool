@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -36,45 +38,68 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Image.asset('assets/images/Image_Logo.png', fit: BoxFit.contain, height: 30),
+        title: Image.asset('assets/images/Image_Logo.png',
+            fit: BoxFit.contain, height: 30),
         centerTitle: true,
       ),
       body: Column(
         children: [
-          SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.all(20),
-              child: BannerSection()),
-          Expanded(child: 
-            SingleChildScrollView(
-              padding: EdgeInsets.all(20),
-              scrollDirection: Axis.vertical,
-              child: PorductSection(),
-            )
-          )
+          BannerSection(),
+          // Expanded(
+          //     child: SingleChildScrollView(
+          //   padding: EdgeInsets.all(20),
+          //   scrollDirection: Axis.vertical,
+          //   child: PorductSection(),
+          //   )
+          // ),
+          Expanded(child: ProductListSection())
         ],
       ),
     );
   }
 }
 
-class BannerSection extends StatelessWidget {
+class BannerSection extends StatefulWidget {
+  @override
+  State<BannerSection> createState() => _BannerSectionState();
+}
+
+class _BannerSectionState extends State<BannerSection> {
+  double _scrollOffset = 0.0;
+
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        BannerGenerator(
-          url:
-              'https://images.pexels.com/photos/934070/pexels-photo-934070.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    return SingleChildScrollView(
+      controller: ScrollController(initialScrollOffset: _scrollOffset),
+      scrollDirection: Axis.horizontal,
+      child: GestureDetector(
+        child: Row(
+          children: [
+            BannerGenerator(
+              url:
+                  'https://images.pexels.com/photos/934070/pexels-photo-934070.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+            ),
+            BannerGenerator(
+                url:
+                    'https://images.pexels.com/photos/996329/pexels-photo-996329.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
+            BannerGenerator(
+              url:
+                  'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+            ),
+          ],
         ),
-        BannerGenerator(
-            url:
-                'https://images.pexels.com/photos/996329/pexels-photo-996329.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
-        BannerGenerator(
-          url:
-              'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-        ),
-      ],
+        onHorizontalDragUpdate: (details) {
+          setState(() {
+            _scrollOffset -= details.delta.dx;
+          });
+        },
+        onHorizontalDragEnd: (details) {
+          setState(() {
+            _scrollOffset = 0.0;
+          });
+        },
+      ),
+      padding: const EdgeInsets.all(20),
     );
   }
 }
@@ -102,6 +127,135 @@ class BannerGenerator extends StatelessWidget {
   }
 }
 
+class ProductInfo {
+  String productName;
+  int productPrice;
+  String productPicUrl;
+  ProductInfo(this.productName, this.productPrice, this.productPicUrl);
+}
+
+class ProductListSection extends StatelessWidget {
+  final List<ProductInfo> cat1Proucts = [
+    ProductInfo('ProductName1', 100,
+        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
+    ProductInfo('ProductName2', 200,
+        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
+    ProductInfo('ProductName3', 300,
+        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
+    ProductInfo('ProductName4', 400,
+        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
+    ProductInfo('ProductName5', 500,
+        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
+    ProductInfo('ProductName6', 600,
+        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
+    ProductInfo('ProductName7', 700,
+        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
+    ProductInfo('ProductName8', 800,
+        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
+    ProductInfo('ProductName9', 900,
+        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
+  ];
+  final List<ProductInfo> cat2Proucts = [
+    ProductInfo('ProductName1', 100,
+        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
+    ProductInfo('ProductName2', 200,
+        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
+    ProductInfo('ProductName3', 300,
+        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
+    ProductInfo('ProductName4', 400,
+        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
+    ProductInfo('ProductName5', 500,
+        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
+    ProductInfo('ProductName6', 600,
+        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
+    ProductInfo('ProductName7', 700,
+        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
+    ProductInfo('ProductName8', 800,
+        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
+    ProductInfo('ProductName9', 900,
+        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
+  ];
+  final List<ProductInfo> cat3Proucts = [
+    ProductInfo('ProductName1', 100,
+        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
+    ProductInfo('ProductName2', 200,
+        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
+    ProductInfo('ProductName3', 300,
+        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
+    ProductInfo('ProductName4', 400,
+        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
+    ProductInfo('ProductName5', 500,
+        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
+    ProductInfo('ProductName6', 600,
+        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
+    ProductInfo('ProductName7', 700,
+        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
+    ProductInfo('ProductName8', 800,
+        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
+    ProductInfo('ProductName9', 900,
+        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    bool isScreenWide = MediaQuery.of(context).size.width >= 800;
+    return Row(
+      children: isScreenWide ? [Flexible(
+        child: ListView.builder(
+          padding: const EdgeInsets.all(8),
+          itemCount: cat1Proucts.length,
+          itemBuilder: (BuildContext context, int index) {
+            return ProductCardGenerator(
+              productName: cat1Proucts[index].productName,
+              productPicUrl: cat1Proucts[index].productPicUrl,
+              productPrice: cat1Proucts[index].productPrice,
+            );
+          }
+        ),
+      ),
+      Flexible(
+        child: ListView.builder(
+          padding: const EdgeInsets.all(8),
+          itemCount: cat2Proucts.length,
+          itemBuilder: (BuildContext context, int index) {
+            return ProductCardGenerator(
+              productName: cat2Proucts[index].productName,
+              productPicUrl: cat2Proucts[index].productPicUrl,
+              productPrice: cat2Proucts[index].productPrice,
+            );
+          }
+        ),
+      ),
+      Flexible(
+        child: ListView.builder(
+          padding: const EdgeInsets.all(8),
+          itemCount: cat3Proucts.length,
+          itemBuilder: (BuildContext context, int index) {
+            return ProductCardGenerator(
+              productName: cat3Proucts[index].productName,
+              productPicUrl: cat3Proucts[index].productPicUrl,
+              productPrice: cat3Proucts[index].productPrice,
+            );
+          }
+        ),
+      )
+      ] : [Flexible(
+        child: ListView.builder(
+          padding: const EdgeInsets.all(8),
+          itemCount: (cat1Proucts + cat2Proucts + cat3Proucts).length,
+          itemBuilder: (BuildContext context, int index) {
+            return ProductCardGenerator(
+              productName: (cat1Proucts + cat2Proucts + cat3Proucts)[index].productName,
+              productPicUrl: (cat1Proucts + cat2Proucts + cat3Proucts)[index].productPicUrl,
+              productPrice: (cat1Proucts + cat2Proucts + cat3Proucts)[index].productPrice,
+            );
+          }
+        ),
+      )]
+    );
+  }
+}
+
 class PorductSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -110,11 +264,11 @@ class PorductSection extends StatelessWidget {
     return Flex(
       direction: isScreenWide ? Axis.horizontal : Axis.vertical,
       clipBehavior: Clip.hardEdge,
-      mainAxisSize:  MainAxisSize.min,
+      mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         Flexible(child: CategorySection(categoryTitle: '女裝')),
-        Flexible(child:CategorySection(categoryTitle: '男裝')),
-        Flexible(child:CategorySection(categoryTitle: '配件'))
+        Flexible(child: CategorySection(categoryTitle: '男裝')),
+        Flexible(child: CategorySection(categoryTitle: '配件'))
       ],
     );
   }
