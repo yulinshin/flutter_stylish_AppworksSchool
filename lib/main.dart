@@ -3,6 +3,7 @@ import 'package:flutter_stylish/productCardGenerator.dart';
 import 'prdouctModel.dart';
 import 'collapsibleList.dart';
 import 'package:flutter/foundation.dart';
+import 'detailPage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -29,15 +30,18 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Image.asset('assets/images/Image_Logo.png',
-            fit: BoxFit.contain, height: 30),
-        centerTitle: true,
-      ),
-      body: ResponsiveLayoutWidget()
+    return DetailPage(
+      product: ProductInfo('test', 300, '333'),
     );
+
+    return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          title: Image.asset('assets/images/Image_Logo.png',
+              fit: BoxFit.contain, height: 30),
+          centerTitle: true,
+        ),
+        body: ResponsiveLayoutWidget());
   }
 }
 
@@ -63,13 +67,12 @@ class ResponsiveLayoutWidget extends StatelessWidget {
       return Column(
         children: [
           BannerSection(),
-          Expanded(child:HorizontalProductList(data: data)),
+          Expanded(child: HorizontalProductList(data: data)),
         ],
       );
     }
   }
 }
-
 
 class BannerSection extends StatefulWidget {
   @override
@@ -149,6 +152,7 @@ List<ProductInfo> generateObjects(int count) {
   }
   return objects;
 }
+
 class HorizontalProductList extends StatelessWidget {
   final List<ProductCategory> data;
 
@@ -168,17 +172,17 @@ class HorizontalProductList extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-                    category.title,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+              category.title,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             Expanded(
               child: Container(
                 width: itemWidth,
                 child: ListView.builder(
-                   physics: AlwaysScrollableScrollPhysics(),
+                  physics: AlwaysScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemCount: category.products.length,
                   itemBuilder: (BuildContext context, int index) {
