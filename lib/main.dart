@@ -1,6 +1,8 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_stylish/productCardGenerator.dart';
+import 'prdouctModel.dart';
+import 'collapsibleList.dart';
+import 'package:flutter/foundation.dart';
 
 void main() {
   runApp(const MyApp());
@@ -25,14 +27,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,22 +36,40 @@ class _MyHomePageState extends State<MyHomePage> {
             fit: BoxFit.contain, height: 30),
         centerTitle: true,
       ),
-      body: Column(
-        children: [
-          BannerSection(),
-          // Expanded(
-          //     child: SingleChildScrollView(
-          //   padding: EdgeInsets.all(20),
-          //   scrollDirection: Axis.vertical,
-          //   child: PorductSection(),
-          //   )
-          // ),
-          Expanded(child: ProductListSection())
-        ],
-      ),
+      body: ResponsiveLayoutWidget()
     );
   }
 }
+
+class ResponsiveLayoutWidget extends StatelessWidget {
+  final List<ProductCategory> data = [
+    ProductCategory('男裝', generateObjects(4)),
+    ProductCategory('女裝', generateObjects(6)),
+    ProductCategory('飾品', generateObjects(10)),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+
+    if (screenWidth < 600) {
+      return Column(
+        children: [
+          BannerSection(),
+          Expanded(child: CollapsibleHeaderList(data: data)),
+        ],
+      );
+    } else {
+      return Column(
+        children: [
+          BannerSection(),
+          Expanded(child:HorizontalProductList(data: data)),
+        ],
+      );
+    }
+  }
+}
+
 
 class BannerSection extends StatefulWidget {
   @override
@@ -127,248 +139,58 @@ class BannerGenerator extends StatelessWidget {
   }
 }
 
-class ProductInfo {
-  String productName;
-  int productPrice;
-  String productPicUrl;
-  ProductInfo(this.productName, this.productPrice, this.productPicUrl);
-}
-
-class ProductListSection extends StatelessWidget {
-  final List<ProductInfo> cat1Proucts = [
-    ProductInfo('ProductName1', 100,
-        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
-    ProductInfo('ProductName2', 200,
-        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
-    ProductInfo('ProductName3', 300,
-        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
-    ProductInfo('ProductName4', 400,
-        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
-    ProductInfo('ProductName5', 500,
-        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
-    ProductInfo('ProductName6', 600,
-        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
-    ProductInfo('ProductName7', 700,
-        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
-    ProductInfo('ProductName8', 800,
-        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
-    ProductInfo('ProductName9', 900,
-        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
-  ];
-  final List<ProductInfo> cat2Proucts = [
-    ProductInfo('ProductName1', 100,
-        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
-    ProductInfo('ProductName2', 200,
-        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
-    ProductInfo('ProductName3', 300,
-        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
-    ProductInfo('ProductName4', 400,
-        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
-    ProductInfo('ProductName5', 500,
-        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
-    ProductInfo('ProductName6', 600,
-        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
-    ProductInfo('ProductName7', 700,
-        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
-    ProductInfo('ProductName8', 800,
-        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
-    ProductInfo('ProductName9', 900,
-        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
-  ];
-  final List<ProductInfo> cat3Proucts = [
-    ProductInfo('ProductName1', 100,
-        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
-    ProductInfo('ProductName2', 200,
-        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
-    ProductInfo('ProductName3', 300,
-        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
-    ProductInfo('ProductName4', 400,
-        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
-    ProductInfo('ProductName5', 500,
-        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
-    ProductInfo('ProductName6', 600,
-        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
-    ProductInfo('ProductName7', 700,
-        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
-    ProductInfo('ProductName8', 800,
-        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
-    ProductInfo('ProductName9', 900,
-        'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    bool isScreenWide = MediaQuery.of(context).size.width >= 800;
-    return Row(
-      children: isScreenWide ? [Flexible(
-        child: ListView.builder(
-          padding: const EdgeInsets.all(8),
-          itemCount: cat1Proucts.length,
-          itemBuilder: (BuildContext context, int index) {
-            return ProductCardGenerator(
-              productName: cat1Proucts[index].productName,
-              productPicUrl: cat1Proucts[index].productPicUrl,
-              productPrice: cat1Proucts[index].productPrice,
-            );
-          }
-        ),
-      ),
-      Flexible(
-        child: ListView.builder(
-          padding: const EdgeInsets.all(8),
-          itemCount: cat2Proucts.length,
-          itemBuilder: (BuildContext context, int index) {
-            return ProductCardGenerator(
-              productName: cat2Proucts[index].productName,
-              productPicUrl: cat2Proucts[index].productPicUrl,
-              productPrice: cat2Proucts[index].productPrice,
-            );
-          }
-        ),
-      ),
-      Flexible(
-        child: ListView.builder(
-          padding: const EdgeInsets.all(8),
-          itemCount: cat3Proucts.length,
-          itemBuilder: (BuildContext context, int index) {
-            return ProductCardGenerator(
-              productName: cat3Proucts[index].productName,
-              productPicUrl: cat3Proucts[index].productPicUrl,
-              productPrice: cat3Proucts[index].productPrice,
-            );
-          }
-        ),
-      )
-      ] : [Flexible(
-        child: ListView.builder(
-          padding: const EdgeInsets.all(8),
-          itemCount: (cat1Proucts + cat2Proucts + cat3Proucts).length,
-          itemBuilder: (BuildContext context, int index) {
-            return ProductCardGenerator(
-              productName: (cat1Proucts + cat2Proucts + cat3Proucts)[index].productName,
-              productPicUrl: (cat1Proucts + cat2Proucts + cat3Proucts)[index].productPicUrl,
-              productPrice: (cat1Proucts + cat2Proucts + cat3Proucts)[index].productPrice,
-            );
-          }
-        ),
-      )]
+List<ProductInfo> generateObjects(int count) {
+  List<ProductInfo> objects = [];
+  for (int i = 0; i < count; i++) {
+    objects.add(
+      ProductInfo('ProductName1', 100,
+          'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
     );
   }
+  return objects;
 }
+class HorizontalProductList extends StatelessWidget {
+  final List<ProductCategory> data;
 
-class PorductSection extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    bool isScreenWide = MediaQuery.of(context).size.width >= 800;
-
-    return Flex(
-      direction: isScreenWide ? Axis.horizontal : Axis.vertical,
-      clipBehavior: Clip.hardEdge,
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Flexible(child: CategorySection(categoryTitle: '女裝')),
-        Flexible(child: CategorySection(categoryTitle: '男裝')),
-        Flexible(child: CategorySection(categoryTitle: '配件'))
-      ],
-    );
-  }
-}
-
-class CategorySection extends StatelessWidget {
-  const CategorySection({
-    required this.categoryTitle,
-  });
-
-  final String categoryTitle;
+  const HorizontalProductList({required this.data});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(categoryTitle),
-        ProductCardGenerator(
-          productName: "ProductName",
-          productPicUrl:
-              "https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-          productPrice: 123,
-        ),
-        ProductCardGenerator(
-          productName: "ProductName",
-          productPicUrl:
-              "https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-          productPrice: 123,
-        ),
-        ProductCardGenerator(
-          productName: "ProductName",
-          productPicUrl:
-              "https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-          productPrice: 123,
-        ),
-        ProductCardGenerator(
-          productName: "ProductName",
-          productPicUrl:
-              "https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-          productPrice: 123,
-        )
-      ],
-    );
-  }
-}
+    final itemWidth = MediaQuery.of(context).size.width / 3;
 
-class ProductCardGenerator extends StatelessWidget {
-  const ProductCardGenerator({
-    required this.productName,
-    required this.productPrice,
-    required this.productPicUrl,
-  });
-
-  final String productName;
-  final int productPrice;
-  final String productPicUrl;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      semanticContainer: true,
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      child: Row(
-        children: [
-          Image.network(
-            productPicUrl,
-            height: 100,
-            width: 80,
-            fit: BoxFit.fitHeight,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Text(
-                    productName,
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+    return ListView.builder(
+      scrollDirection: Axis.horizontal,
+      shrinkWrap: true,
+      itemCount: data.length,
+      itemBuilder: (BuildContext context, int index) {
+        final ProductCategory category = data[index];
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+                    category.title,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
+            Expanded(
+              child: Container(
+                width: itemWidth,
+                child: ListView.builder(
+                   physics: AlwaysScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: category.products.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final ProductInfo product = category.products[index];
+                    return ProductCardGenerator(model: product);
+                  },
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Text(
-                    'NT\$ $productPrice',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
-        ],
-      ),
-      shape: RoundedRectangleBorder(
-          side: BorderSide(
-            color: Colors.grey,
-            width: 0.5,
-          ),
-          borderRadius: BorderRadius.circular(10.0)),
+          ],
+        );
+      },
     );
   }
 }
