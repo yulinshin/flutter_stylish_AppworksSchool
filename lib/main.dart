@@ -30,10 +30,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return DetailPage(
-      product: ProductInfo('test', 300, '333'),
-    );
-
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,

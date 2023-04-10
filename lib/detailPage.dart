@@ -1,127 +1,199 @@
 import 'package:flutter/material.dart';
 import 'prdouctModel.dart';
 
-class DetailPage extends StatelessWidget {
-  final ProductInfo product;
-
-  const DetailPage({required this.product});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(product.productName),
-      ),
-      body: Center(
-        child: ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: 1200),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TwoBlocksWidget(topText: '1', bottomText: '2'),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 List<String> colorData = [
   '#FFC0CB', // pink
   '#FFB6C1', // lightpink
   '#FF69B4', // hotpink
 ];
 
-class TwoBlocksWidget extends StatelessWidget {
-  final String topText;
-  final String bottomText;
+class ProductDetailsPage extends StatelessWidget {
+  final ProductInfo productDetialinfo;
 
-  const TwoBlocksWidget({required this.topText, required this.bottomText});
+  const ProductDetailsPage({required this.productDetialinfo});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          color: Colors.grey[800],
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        backgroundColor: Colors.white,
+        title: Image.asset('assets/images/Image_Logo.png',
+            fit: BoxFit.contain, height: 30),
+        centerTitle: true,
+      ),
+      body: Center(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final maxWidth =
+                constraints.maxWidth > 1200 ? 1200 : constraints.maxWidth;
+            return SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxWidth: 800,
+                  ),
+                  child: Column(
+                    children: [
+                      ProductInfoSection(
+                          maxWidth: maxWidth, productInfo: productDetialinfo),
+                      Row(
+                        children: [
+                          ShaderMask(
+                            shaderCallback: (bounds) {
+                              return LinearGradient(
+                                colors: [Colors.purple, Colors.blue],
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                              ).createShader(bounds);
+                            },
+                            blendMode: BlendMode.srcIn,
+                            child: Text(
+                              '細部說明',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 16),
+                          Expanded(
+                            child: Divider(
+                              color: Colors.grey,
+                            ),
+                          )
+                        ],
+                      ),
+                      Text(
+                          'Suspendisse potenti. Proin a velit sapien. Aenean eu ex in dui tristique egestas in quis lorem. Curabitur imperdiet molestie purus. Donec volutpat at turpis at cursus. Nullam ut facilisis nulla. Praesent sit amet orci ullamcorper, pharetra ipsum vel, vulputate magna. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices.'),
+                      Image.network(
+                        'https://picsum.photos/800/300',
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
+                      SizedBox(height: 16),
+                      Image.network(
+                        'https://picsum.photos/800/600',
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class ProductInfoSection extends StatelessWidget {
+  final num maxWidth;
+  final ProductInfo productInfo;
+
+  const ProductInfoSection({
+    Key? key,
+    required this.maxWidth,
+    required this.productInfo,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Flex(
-      direction: MediaQuery.of(context).size.width < 600
-          ? Axis.vertical
-          : Axis.horizontal,
+      direction: maxWidth > 600 ? Axis.horizontal : Axis.vertical,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Flexible(
-          child: SizedBox(
-            height: 400,
-            child: Image.network(
-              'https://images.pexels.com/photos/3965557/pexels-photo-3965557.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-              fit: BoxFit.cover,
-            ),
+          flex: maxWidth > 600 ? 1 : 0,
+          child: Image.network(
+            'https://picsum.photos/300/300',
+            width: double.infinity,
+            height: 500,
+            fit: BoxFit.cover,
           ),
         ),
         Flexible(
-          child: Container(
-            color: Colors.orange,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
+          flex: maxWidth > 600 ? 1 : 0,
+          child: Padding(
+            padding: EdgeInsets.all(16),
+            child: IntrinsicHeight(
               child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '產品名稱',
-                      textAlign: TextAlign.start,
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      '產品編號: 123456',
-                      textAlign: TextAlign.start,
-                      style: TextStyle(fontSize: 16),
-                    ),
-                    Text(
-                      '價錢: \$100',
-                      textAlign: TextAlign.start,
-                      style: TextStyle(fontSize: 16),
-                    ),
-                    Container(
-                      height: 1,
-                      color: Colors.grey[500],
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          '顏色',
-                          textAlign: TextAlign.start,
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(6.0),
-                          child: Container(
-                            width: 1,
-                            height: 30,
-                            color: Colors.grey[500],
-                          ),
-                        ),
-                        ColorSelector(colors: colorData),
-                      ],
-                    ),
-                    SizeSelector(
-                      sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
-                      onSelect: (selectedSize) => print('選擇了尺寸 $selectedSize'),
-                    ),
-                    QuantitySelector(
-                      initialValue: 1,
-                      onQuantityChanged: (newQuantity) {
-                        print('New quantity: $newQuantity');
-                      },
-                    ),
-                    RectangleButton(text: '請選擇尺寸', onPressed: () => print('加入購物車')),
-                     Text(
-                          '實品顏色依單品照為主 \n 棉 100% \n 厚薄：薄 \n 彈性：無 \n 素材產地/日本 \n 加工產地 / 中國',
-                          textAlign: TextAlign.start,
-                          style: TextStyle(fontSize: 16),
-                        ),
-                  ]),
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    productInfo.productName,
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    '產品描述',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    'NT\$${productInfo.productPrice}',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  Divider(
+                    color: Colors.grey,
+                  ),
+                  ColorPicker(),
+                  SizeSelector(
+                    sizes: ['XS', 'S', 'M', 'L', 'XL'],
+                    onSelect: (selectedSize) => print('選擇了尺寸 $selectedSize'),
+                  ),
+                  QuantitySelector(
+                    initialValue: 1,
+                    onQuantityChanged: (newQuantity) {
+                      print('New quantity: $newQuantity');
+                    },
+                  ),
+                  AddToCartButton(
+                      text: '請選擇尺寸', onPressed: () => print('加入購物車')),
+                  Text(
+                    '實品顏色依單品照為主 \n 棉 100% \n 厚薄：薄 \n 彈性：無 \n 素材產地/日本 \n 加工產地 / 中國',
+                    textAlign: TextAlign.start,
+                    style: TextStyle(fontSize: 16),
+                  )
+                ],
+              ),
             ),
           ),
         ),
+      ],
+    );
+  }
+}
+
+class ColorPicker extends StatelessWidget {
+  const ColorPicker({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Text(
+          '顏色',
+          textAlign: TextAlign.start,
+          style: TextStyle(fontSize: 16),
+        ),
+        VerticalDivider(
+          width: 20,
+          color: Colors.grey,
+          thickness: 1,
+        ),
+        ColorSelector(colors: colorData),
       ],
     );
   }
@@ -183,9 +255,13 @@ class _SizeSelectorState extends State<SizeSelector> {
       children: [
         Text(
           '尺寸',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          textAlign: TextAlign.start,
+          style: TextStyle(fontSize: 16),
         ),
-        SizedBox(width: 8),
+        VerticalDivider(
+          color: Colors.grey,
+          thickness: 1,
+        ),
         for (var size in widget.sizes)
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
@@ -204,7 +280,8 @@ class _SizeSelectorState extends State<SizeSelector> {
                 ),
               ),
               style: ElevatedButton.styleFrom(
-                primary: _selectedSize == size ? Colors.blue : Colors.grey[200],
+                primary:
+                    _selectedSize == size ? Colors.grey[600] : Colors.grey[200],
                 padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16.0),
@@ -266,21 +343,27 @@ class _QuantitySelectorState extends State<QuantitySelector> {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
+        Text(
+          '尺寸',
+          textAlign: TextAlign.start,
+          style: TextStyle(fontSize: 16),
+        ),
+        VerticalDivider(
+          color: Colors.grey,
+          thickness: 1,
+        ),
         IconButton(
-          icon: Icon(Icons.remove),
+          icon: Icon(Icons.remove_circle),
           onPressed: _decrementQuantity,
         ),
-        SizedBox(
-          width: 64.0,
+        Expanded(
           child: TextField(
             controller: _controller,
             keyboardType: TextInputType.number,
             textAlign: TextAlign.center,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-            ),
+            decoration: InputDecoration(border: InputBorder.none),
             onChanged: (value) {
               if (value.isNotEmpty) {
                 _quantity = int.parse(value);
@@ -290,7 +373,7 @@ class _QuantitySelectorState extends State<QuantitySelector> {
           ),
         ),
         IconButton(
-          icon: Icon(Icons.add),
+          icon: Icon(Icons.add_circle),
           onPressed: _incrementQuantity,
         ),
       ],
@@ -298,12 +381,12 @@ class _QuantitySelectorState extends State<QuantitySelector> {
   }
 }
 
-class RectangleButton extends StatelessWidget {
+class AddToCartButton extends StatelessWidget {
   final String text;
   final bool enabled;
   final VoidCallback onPressed;
 
-  RectangleButton({
+  AddToCartButton({
     required this.text,
     this.enabled = true,
     required this.onPressed,
@@ -311,21 +394,23 @@ class RectangleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: enabled ? onPressed : null,
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
+    return Container(
+      width: double.infinity,
+      height: 46,
+      child: ElevatedButton(
+        onPressed: enabled ? onPressed : null,
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(),
+          backgroundColor: enabled ? Colors.grey[800] : Colors.grey[300],
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         ),
-        primary: enabled ? Colors.blue : Colors.grey,
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      ),
-      child: Text(
-        text,
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 16,
-          fontWeight: FontWeight.bold,
+        child: Text(
+          text,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
     );

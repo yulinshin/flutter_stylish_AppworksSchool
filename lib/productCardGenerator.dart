@@ -15,7 +15,7 @@ class ProductCardGenerator extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => DetailPage(product: model),
+              builder: (context) => ProductDetailsPage(productDetialinfo: model),
             ),
           );
         },
