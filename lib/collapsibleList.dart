@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'prdouctModel.dart';
+import 'package:flutter_stylish/API/netWorking.dart';
+import 'Model/prdouct.dart';
 import 'productCardGenerator.dart';
 
 class CollapsibleHeaderList extends StatefulWidget {
@@ -36,15 +37,31 @@ class _CollapsibleHeaderListState extends State<CollapsibleHeaderList> {
               _collapsedMap[sectionTitle] = !isCollapsed;
             });
           },
-          child: ListView.builder(
+          child: FutureBuilder(
+            future: getProducts(),
+            builder: (BuildContext context, AsyncSnapshot<List<ProductInfo>> snapshot) {
+if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Failed to load hots'));
+          } else {
+            return Column(
+              children: [
+                ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: widget.data[sectionIndex].products.length,
+            itemCount: snapshot.data!.length,
             itemBuilder: (BuildContext context, int index) {
               return ProductCardGenerator(
-                  model: widget.data[sectionIndex].products[index]);
+                  model: snapshot.data![index]
+                  );
             },
-          ),
+          )
+              ],
+            );
+          }
+            }
+          )
         );
       },
     );

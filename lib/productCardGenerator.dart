@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'prdouctModel.dart';
+import 'Model/prdouct.dart';
 import 'detailPage.dart';
 
 class ProductCardGenerator extends StatelessWidget {

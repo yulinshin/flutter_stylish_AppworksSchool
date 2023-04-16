@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_stylish/productCardGenerator.dart';
-import 'prdouctModel.dart';
+import 'BannerGenerator.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'Model/prdouct.dart';
+import 'Model/prdouctCubit.dart';
+import 'Model/hotCubit.dart';
+import 'Model/hot.dart';
 import 'collapsibleList.dart';
 import 'package:flutter/foundation.dart';
 import 'detailPage.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,55 +28,93 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+  const MyHomePage({Key? key}) : super(key: key);
+
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return MultiProvider(
+      providers: [
+        Provider<HotCubit>(create: (_) => HotCubit()),
+        Provider<ProductCubit>(create: (_) => ProductCubit()),
+      ],
+      child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
-          title: Image.asset('assets/images/Image_Logo.png',
-              fit: BoxFit.contain, height: 30),
+          title: Image.asset(
+            'assets/images/Image_Logo.png',
+            fit: BoxFit.contain,
+            height: 30,
+          ),
           centerTitle: true,
         ),
-        body: ResponsiveLayoutWidget());
+        body: ResponsiveLayoutWidget(),
+      ),
+    );
   }
 }
 
-class ResponsiveLayoutWidget extends StatelessWidget {
-  final List<ProductCategory> data = [
-    ProductCategory('男裝', generateObjects(4)),
-    ProductCategory('女裝', generateObjects(6)),
-    ProductCategory('飾品', generateObjects(10)),
-  ];
+class ResponsiveLayoutWidget extends StatefulWidget {
+  @override
+  _ResponsiveLayoutWidgetState createState() => _ResponsiveLayoutWidgetState();
+}
+
+class _ResponsiveLayoutWidgetState extends State<ResponsiveLayoutWidget> {
+  late Future<void> hotData;
+  late Future<void> productData;
+
+  @override
+  void initState() {
+    super.initState();
+    hotData = context.read<HotCubit>().getHotData();
+    productData = context.read<ProductCubit>().getProductsData();
+  }
 
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
 
-    if (screenWidth < 600) {
-      return Column(
-        children: [
-          BannerSection(),
-          Expanded(child: CollapsibleHeaderList(data: data)),
-        ],
-      );
-    } else {
-      return Column(
-        children: [
-          BannerSection(),
-          Expanded(child: HorizontalProductList(data: data)),
-        ],
-      );
-    }
+    return FutureBuilder(
+      future: Future.wait([hotData, productData]),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error fetching data'));
+        } else {
+          final List<dynamic> data = snapshot.data!;
+          final List<Hot> hotList = data[0];
+          final List<ProductCategory> productCategories = data[1];
+          if (screenWidth < 600) {
+            return Column(
+              children: [
+                BannerSection(hotList: hotList),
+                Expanded(child: CollapsibleHeaderList(data: productCategories)),
+              ],
+            );
+          } else {
+            return Column(
+              children: [
+                BannerSection(hotList: hotList),
+                Expanded(child: HorizontalProductList(data: productCategories)),
+              ],
+            );
+          }
+        }
+      },
+    );
   }
 }
 
 class BannerSection extends StatefulWidget {
+  final List<Hot> hotList;
+
+  const BannerSection({required this.hotList});
+
   @override
   State<BannerSection> createState() => _BannerSectionState();
 }
@@ -86,17 +130,9 @@ class _BannerSectionState extends State<BannerSection> {
       child: GestureDetector(
         child: Row(
           children: [
-            BannerGenerator(
-              url:
-                  'https://images.pexels.com/photos/934070/pexels-photo-934070.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-            ),
-            BannerGenerator(
-                url:
-                    'https://images.pexels.com/photos/996329/pexels-photo-996329.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
-            BannerGenerator(
-              url:
-                  'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-            ),
+            BannerGenerator(url: widget.hotList[0].imageUrl),
+            BannerGenerator(url: widget.hotList[1].imageUrl),
+            BannerGenerator(url: widget.hotList[2].imageUrl),
           ],
         ),
         onHorizontalDragUpdate: (details) {
@@ -115,36 +151,15 @@ class _BannerSectionState extends State<BannerSection> {
   }
 }
 
-class BannerGenerator extends StatelessWidget {
-  const BannerGenerator({
-    Key? key,
-    required this.url,
-  }) : super(key: key);
-
-  final String url;
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      semanticContainer: true,
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      child: Image.network(
-        url,
-        height: 200,
-        width: 400,
-        fit: BoxFit.fill,
-      ),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-    );
-  }
-}
-
 List<ProductInfo> generateObjects(int count) {
   List<ProductInfo> objects = [];
   for (int i = 0; i < count; i++) {
-    objects.add(
-      ProductInfo('ProductName1', 100,
-          'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
-    );
+    objects.add(ProductInfo(
+        id: 32,
+        productName: "3333",
+        productPrice: 300,
+        productPicUrl:
+            'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'));
   }
   return objects;
 }
