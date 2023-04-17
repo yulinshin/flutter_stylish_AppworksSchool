@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_stylish/API/netWorking.dart';
-import 'Model/prdouct.dart';
+import 'Product/prdouct.dart';
 import 'productCardGenerator.dart';
 
 class CollapsibleHeaderList extends StatefulWidget {

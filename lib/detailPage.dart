@@ -1,17 +1,11 @@
 import 'package:flutter/material.dart';
-import 'Model/prdouct.dart';
+import 'Product/prdouct.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'Color/ColorPicker.dart';
 import 'Size/SizeSelector.dart';
 import 'Quantity/QuantitySelector.dart';
 import 'Quantity/QuantityCubit.dart';
 import 'Cart/CartButton.dart';
-
-List<String> colorDatas = [
-  '#FFC0CB', // pink
-  '#FFB6C1', // lightpink
-  '#FF69B4', // hotpink
-];
 
 class ProductDetailsPage extends StatelessWidget {
   final ProductInfo productDetialinfo;
@@ -77,16 +71,16 @@ class ProductDetailsPage extends StatelessWidget {
                           )
                         ],
                       ),
-                      const Text(
-                          'Suspendisse potenti. Proin a velit sapien. Aenean eu ex in dui tristique egestas in quis lorem. Curabitur imperdiet molestie purus. Donec volutpat at turpis at cursus. Nullam ut facilisis nulla. Praesent sit amet orci ullamcorper, pharetra ipsum vel, vulputate magna. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices.'),
+                      Text(
+                          productDetialinfo.story ?? ''),
                       Image.network(
-                        'https://picsum.photos/800/300',
+                        productDetialinfo.images?[0] ?? 'assets/images/Image_Logo.png',
                         width: double.infinity,
                         fit: BoxFit.cover,
                       ),
                       const SizedBox(height: 16),
                       Image.network(
-                        'https://picsum.photos/800/600',
+                        productDetialinfo.images?[1] ?? 'assets/images/Image_Logo.png',
                         width: double.infinity,
                         fit: BoxFit.cover,
                       ),
@@ -122,7 +116,7 @@ class ProductInfoSection extends StatelessWidget {
         Flexible(
           flex: maxWidth > 600 ? 1 : 0,
           child: Image.network(
-            'https://picsum.photos/300/300',
+            productInfo.mainImage ?? 'assets/images/Image_Logo.png',
             width: double.infinity,
             height: 500,
             fit: BoxFit.cover,
@@ -137,25 +131,25 @@ class ProductInfoSection extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    productInfo.productName,
+                    productInfo.title ?? '',
                     style: const TextStyle(
                         fontSize: 24, fontWeight: FontWeight.bold),
                   ),
-                  const Text(
-                    '產品描述',
+                  Text(
+                    productInfo.description ?? '',
                     style: TextStyle(fontSize: 16),
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'NT\$${productInfo.productPrice}',
+                    'NT\$${productInfo.price}',
                     style: const TextStyle(fontSize: 20),
                   ),
                   const Divider(
                     color: Colors.grey,
                   ),
-                  ColorPicker(colorData: colorDatas),
+                  ColorPicker(colorData: productInfo.colors ?? []),
                   SizeSelector(
-                    sizes: ['XS', 'S', 'M', 'L', 'XL'],
+                    sizes: productInfo.sizes ?? [],
                     onSelect: (selectedSize) => print('選擇了尺寸 $selectedSize'),
                   ),
                   BlocProvider<QuantityCubit>(
@@ -167,8 +161,27 @@ class ProductInfoSection extends StatelessWidget {
                   ),
                   AddToCartButton(
                       text: '請選擇尺寸', onPressed: () => print('加入購物車')),
-                  const Text(
-                    '實品顏色依單品照為主 \n 棉 100% \n 厚薄：薄 \n 彈性：無 \n 素材產地/日本 \n 加工產地 / 中國',
+                  const SizedBox(height: 16),
+                   Text(
+                    productInfo.note ?? '',
+                    textAlign: TextAlign.start,
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    productInfo.texture ?? '',
+                    textAlign: TextAlign.start,
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    productInfo.wash ?? '',
+                    textAlign: TextAlign.start,
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    productInfo.place ?? '',
                     textAlign: TextAlign.start,
                     style: TextStyle(fontSize: 16),
                   )

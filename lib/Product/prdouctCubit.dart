@@ -1,9 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'prdouct.dart';
+import 'package:flutter_stylish/API/netWorking.dart';
 
-class ProductCubit extends Cubit<List<ProductCategory>> {
-  ProductCubit() : super([]);
+class ProductCategoryCubit extends Cubit<List<ProductCategory>> {
+  ProductCategoryCubit() : super([]);
 
   Future<List<ProductCategory>> getProductsData() async {
     final dio = Dio();
@@ -31,3 +32,19 @@ class ProductCubit extends Cubit<List<ProductCategory>> {
     return productCategoryList;
   }
 }
+
+class ProductCubit extends Cubit<List<ProductInfo>> {
+  ProductCubit() : super([]);
+
+  Future<void> fetchProducts() async {
+    try {
+      final products = await getProducts();
+      emit(products);
+    } catch (e) {
+      // 发生错误时，可以通过 emit 发送错误状态
+      print(e);
+    }
+  }
+  
+}
+

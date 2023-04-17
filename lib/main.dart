@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_stylish/productCardGenerator.dart';
 import 'BannerGenerator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'Model/prdouct.dart';
-import 'Model/prdouctCubit.dart';
+import 'Product/prdouct.dart';
+import 'Product/prdouctCubit.dart';
 import 'Model/hotCubit.dart';
 import 'Model/hot.dart';
 import 'collapsibleList.dart';
@@ -40,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return MultiProvider(
       providers: [
         Provider<HotCubit>(create: (_) => HotCubit()),
-        Provider<ProductCubit>(create: (_) => ProductCubit()),
+        Provider<ProductCategoryCubit>(create: (_) => ProductCategoryCubit()),
       ],
       child: Scaffold(
         appBar: AppBar(
@@ -71,7 +71,7 @@ class _ResponsiveLayoutWidgetState extends State<ResponsiveLayoutWidget> {
   void initState() {
     super.initState();
     hotData = context.read<HotCubit>().getHotData();
-    productData = context.read<ProductCubit>().getProductsData();
+    productData = context.read<ProductCategoryCubit>().getProductsData();
   }
 
   @override
@@ -149,19 +149,6 @@ class _BannerSectionState extends State<BannerSection> {
       padding: const EdgeInsets.all(20),
     );
   }
-}
-
-List<ProductInfo> generateObjects(int count) {
-  List<ProductInfo> objects = [];
-  for (int i = 0; i < count; i++) {
-    objects.add(ProductInfo(
-        id: 32,
-        productName: "3333",
-        productPrice: 300,
-        productPicUrl:
-            'https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'));
-  }
-  return objects;
 }
 
 class HorizontalProductList extends StatelessWidget {

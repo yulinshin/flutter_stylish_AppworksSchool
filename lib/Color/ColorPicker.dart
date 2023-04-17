@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_stylish/Product/prdouct.dart';
+
 
 class ColorPicker extends StatelessWidget {
-  final List<String> colorData;
-  const ColorPicker({required this.colorData});
+  final List<OptionColors> colorData;
+   const ColorPicker({required this.colorData});
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +26,9 @@ class ColorPicker extends StatelessWidget {
   }
 }
 
+
 class ColorSelector extends StatelessWidget {
-  final List<String> colors;
+  final List<OptionColors> colors;
 
   const ColorSelector({required this.colors});
 
@@ -40,7 +43,7 @@ class ColorSelector extends StatelessWidget {
           width: 28,
           height: 28,
           decoration: BoxDecoration(
-            color: Color(int.parse(colors[i].replaceAll('#', '0xFF'))),
+            color: Color(int.parse(colors[i].code ?? "", radix: 16) | 0xFF000000),
             borderRadius: BorderRadius.circular(4),
           ),
         ),

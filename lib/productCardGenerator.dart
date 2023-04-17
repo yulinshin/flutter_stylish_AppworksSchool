@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'Model/prdouct.dart';
+import 'Product/prdouct.dart';
 import 'detailPage.dart';
 
 class ProductCardGenerator extends StatelessWidget {
@@ -25,7 +25,7 @@ class ProductCardGenerator extends StatelessWidget {
           child: Row(
             children: [
               Image.network(
-                model.productPicUrl,
+                model.mainImage ?? '',
                 height: 100,
                 width: 80,
                 fit: BoxFit.fitHeight,
@@ -38,7 +38,7 @@ class ProductCardGenerator extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(4.0),
                       child: Text(
-                        model.productName,
+                        model.title ?? '',
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold),
                       ),
@@ -46,7 +46,7 @@ class ProductCardGenerator extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(4.0),
                       child: Text(
-                        'NT\$ ${model.productPrice}',
+                        'NT\$ ${model.price}',
                         style: TextStyle(fontSize: 16),
                       ),
                     ),
