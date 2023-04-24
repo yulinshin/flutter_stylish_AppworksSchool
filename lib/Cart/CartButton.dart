@@ -17,7 +17,7 @@ class AddToCartButton extends StatelessWidget {
       width: double.infinity,
       height: 46,
       child: ElevatedButton(
-        onPressed: enabled ? onPressed : null,
+        onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           shape: const RoundedRectangleBorder(),
           backgroundColor: enabled ? Colors.grey[800] : Colors.grey[300],

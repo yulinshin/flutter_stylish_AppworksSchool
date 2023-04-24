@@ -6,6 +6,7 @@ import 'Size/SizeSelector.dart';
 import 'Quantity/QuantitySelector.dart';
 import 'Quantity/QuantityCubit.dart';
 import 'Cart/CartButton.dart';
+import 'package:flutter/services.dart';
 
 class ProductDetailsPage extends StatelessWidget {
   final ProductInfo productDetialinfo;
@@ -71,16 +72,17 @@ class ProductDetailsPage extends StatelessWidget {
                           )
                         ],
                       ),
-                      Text(
-                          productDetialinfo.story ?? ''),
+                      Text(productDetialinfo.story ?? ''),
                       Image.network(
-                        productDetialinfo.images?[0] ?? 'assets/images/Image_Logo.png',
+                        productDetialinfo.images?[0] ??
+                            'assets/images/Image_Logo.png',
                         width: double.infinity,
                         fit: BoxFit.cover,
                       ),
                       const SizedBox(height: 16),
                       Image.network(
-                        productDetialinfo.images?[1] ?? 'assets/images/Image_Logo.png',
+                        productDetialinfo.images?[1] ??
+                            'assets/images/Image_Logo.png',
                         width: double.infinity,
                         fit: BoxFit.cover,
                       ),
@@ -99,12 +101,21 @@ class ProductDetailsPage extends StatelessWidget {
 class ProductInfoSection extends StatelessWidget {
   final num maxWidth;
   final ProductInfo productInfo;
+  final platform = const MethodChannel('iOSChannel');
+  final paymentsChannel = const MethodChannel('payments');
 
-  const ProductInfoSection({
+  ProductInfoSection({
     Key? key,
     required this.maxWidth,
     required this.productInfo,
-  }) : super(key: key);
+  }) : super(key: key) {
+    paymentsChannel.setMethodCallHandler((call) async {
+      if (call.method == 'paymentSuccess') {
+        final prime = call.arguments['prime'] as String;
+        print(prime);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -160,9 +171,16 @@ class ProductInfoSection extends StatelessWidget {
                     ),
                   ),
                   AddToCartButton(
-                      text: '請選擇尺寸', onPressed: () => print('加入購物車')),
+                      text: '請選擇尺寸',
+                      onPressed: () {
+                        try {
+                          platform.invokeMethod('presentTapPayView');
+                        } on PlatformException catch (e) {
+                          print("Failed to open native page: '${e.message}'.");
+                        }
+                      }),
                   const SizedBox(height: 16),
-                   Text(
+                  Text(
                     productInfo.note ?? '',
                     textAlign: TextAlign.start,
                     style: TextStyle(fontSize: 16),

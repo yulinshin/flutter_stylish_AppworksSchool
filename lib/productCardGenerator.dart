@@ -22,6 +22,7 @@ class ProductCardGenerator extends StatelessWidget {
         child: Card(
           semanticContainer: true,
           clipBehavior: Clip.antiAliasWithSaveLayer,
+          // ignore: sort_child_properties_last
           child: Row(
             children: [
               Image.network(
