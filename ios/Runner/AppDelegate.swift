@@ -1,6 +1,7 @@
 import UIKit
 import Flutter
 import TPDirect
+import GoogleMaps
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
@@ -12,7 +13,7 @@ import TPDirect
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
         GeneratedPluginRegistrant.register(with: self)
-        
+        GMSServices.provideAPIKey("AIzaSyCn7rgnjHBa7T2NeamSXEwrh3gcDkhka8k")
         TPDSetup.setWithAppId(12348, withAppKey: "app_pa1pQcKoY22IlnSXq5m5WP5jFKzoRG58VEXpT7wU62ud7mMbDOGzCYIlzzLF", with: TPDServerType.sandBox)
 
         if let flutterViewController: FlutterViewController = window?.rootViewController as? FlutterViewController {
